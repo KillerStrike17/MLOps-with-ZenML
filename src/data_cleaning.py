@@ -71,4 +71,21 @@ class DataCleaning:
     """
     Class for cleaning data which processes the data and divides in into train and test.
     """
-    pass
+    def __init__(self, data:pd.DataFrame, strategy:DataStrategy) -> None:
+        self.data = data
+        self.strategy = strategy
+        
+    def handle_data(self)->Union[pd.Series, pd.DataFrame]:
+        """
+        Handle Data
+        """
+        try:
+            return self.strategy.handle_data(self.data)
+        except Exception as e:
+            logging.error(f"Error in Handling data: {e}")
+            raise e
+        
+if __name__ == "__name__":
+    data = pd.read_csv('D:\Github\MLOps-with-ZenML\data\olist_customers_dataset.csv')
+    data_cleaning = DataCleaning(data,DataPreProcessStrategy())
+    data_cleaning.handle_data()
